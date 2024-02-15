@@ -10,14 +10,13 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useState } from "react";
-import "../styles/login.scss";
-// import CompanyLogo from "./logo.jpg";
+import "../../styles/login.scss";
 import { useRouter } from "next/navigation";
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 
-const LoginCom=()=> {
+const SignupCom=()=> {
   const router = useRouter();
   const [viewPassword, setViewPassword] = useState(false);
   const [credentials, setCredentials] = useState({
@@ -33,8 +32,8 @@ const LoginCom=()=> {
   };
 
  
-  const goToSignUp = () => {
-    router.push("/signup", { replace: true });
+  const goToSignIn = () => {
+    router.push("/signin", { replace: true });
   };
 
   const handleUsername = (e) => {
@@ -116,9 +115,9 @@ const LoginCom=()=> {
             <Grid item lg={4} md={6} sm={6}>
               <div className="imgMain">
                 <div className="imgDiv">
-                  <img src="/images/logo1.jpg" alt="companyLogo" className="img" />
+                  <img src="/images/logo2.jpg" alt="companyLogo" className="img" />
                   <div className="textandIcon">
-                    <p className="pleaseLogin">Please Singin From Here</p>
+                    <p className="pleaseLogin">Get Registered Yourself</p>
                     <label for="outlined-basica">
                       <ArrowCircleRightIcon size={20} className="loginIcon" />
                     </label>
@@ -131,14 +130,14 @@ const LoginCom=()=> {
                 <div className="mobileViewLogoSection">
                   <div className="mobileImgDiv">
                     <img
-                      src="/images/logo1.jpg"
+                      src="/images/logo2.jpg"
                       alt="companyLogo"
                       className="mobileViewLogo"
                     />
                   </div>
                 </div>
                 <p className="loginForm"  style={{ color: "#013191" }}>
-                  SignIn Form
+                  SignUp Form
                 </p>
                 <p className="credentials">Enter the following credentials</p>
                 <p className="error">{usernameError}</p>
@@ -205,14 +204,7 @@ const LoginCom=()=> {
                     />
                   </div>
 
-                  <p
-                    className="forgetPassword"
-                    onClick={() => {
-                      // forgetPassword();
-                    }}
-                  >
-                    Forgot Password!
-                  </p>
+                 
                 </div>
                 <div className="LoginBtnDiv">
                   <Button
@@ -222,19 +214,19 @@ const LoginCom=()=> {
                     }}
                     style={{ backgroundColor: "#013191" }}
                   >
-                    SignIn
+                    SignUp
                   </Button>
                 </div>
                 <div className="notRegistered">
-                <p>Not Registered! </p>
+                <p>Already Registered! </p>
                 <p
                   className="signUpLogin"
                   onClick={() => {
-                    goToSignUp();
+                    goToSignIn();
                   }}
                 >
                   {" "}
-                  SignUp
+                  SignIn
                   </p>
                   
               </div>
@@ -247,4 +239,4 @@ const LoginCom=()=> {
   );
 }
 
-export default LoginCom;
+export default SignupCom;

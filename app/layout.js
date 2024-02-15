@@ -2,13 +2,13 @@
 'use client'
 import Header from "../Components/Header";
 
-
-export default function Layout({ children }) {
-
+export default function RootLayout({ children }) {
   return (
-    <>
-      <Header/>
-      {children}
-    </>
-  );
+    <html lang="en">
+      <body>
+      {/* <Header/> */}
+        <main>{children}</main>
+      </body>
+    </html>
+  )
 }
