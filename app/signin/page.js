@@ -1,6 +1,6 @@
 
 'use client'
-import LoginCom from '@/Components/login';
+import LoginCom from '@/Components/Login/login';
 import React from 'react'
 
 const Login = () => {
