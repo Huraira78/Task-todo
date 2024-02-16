@@ -1,0 +1,46 @@
+.mainTaskDiv{
+    background-color: rgba(236, 236, 238, 0.384);
+    min-height:80vh;
+    border-radius:10px;
+    margin-top:60px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    .task1{
+        height:100%;
+        width:100%;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        .task2{
+            height:80%;
+            width:90%;
+            border-radius:10px;
+            .mainHeading{
+                font-size:35px;
+                font-weight:800;
+                letter-spacing:1px;
+
+            }
+            .taskBlock{
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+                .taskLi{
+                    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+                    padding:5px 20px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    margin:0 5px;
+                    p{
+                        padding:0 5px
+                    }
+                    .taskIcon{
+                        cursor: pointer;
+                        margin-top:10px;
+                    }
+                }
+            }
+        }
+    }
+}
