@@ -10,12 +10,13 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useState } from "react";
-import "../styles/login.scss";
+import "../../styles/login.scss";
 // import CompanyLogo from "./logo.jpg";
 import { useRouter } from "next/navigation";
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import { ErrorMessage, SuccessMessage } from "@/AlertMessages/alertmessages";
 
 const LoginCom=()=> {
   const router = useRouter();
@@ -36,6 +37,11 @@ const LoginCom=()=> {
   const goToSignUp = () => {
     router.push("/signup", { replace: true });
   };
+
+  const goToAddTask=()=>{
+    router.push("/addtask", { replace: true });
+
+  }
 
   const handleUsername = (e) => {
     const newUsername = e.target.value;
@@ -100,8 +106,26 @@ const LoginCom=()=> {
   const SignInFunc = async () => {
     if (EmailValidationFunc() && passwordValidation()) {
       try {
-       console.log('credentials',credentials);
+      const res=await  fetch('https://dummyjson.com/auth/login', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    
+    username: 'kminchelle',
+    password: '0lelplR',
+    // expiresInMins: 60, // optional
+  })
+})
+.then(res => res.json())
+.then(data=>
+  {SuccessMessage(`${data.username} Verified`);
+  goToAddTask();
+  localStorage.setItem('username',data.username);
+  localStorage.setItem('token',data.token);}
+
+  );
       } catch (error) {
+        ErrorMessage('Error in Singin')
         console.log("Error:", error.message);
       }
     }

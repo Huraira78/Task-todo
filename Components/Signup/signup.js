@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import { ErrorMessage, SuccessMessage } from "@/AlertMessages/alertmessages";
 
 const SignupCom=()=> {
   const router = useRouter();
@@ -99,8 +100,24 @@ const SignupCom=()=> {
   const SignInFunc = async () => {
     if (EmailValidationFunc() && passwordValidation()) {
       try {
-       console.log('credentials',credentials);
+
+const res=await fetch('https://dummyjson.com/users/add', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    firstName: 'Muhammad',
+    lastName: 'Ovi',
+    age: 250,
+  })
+})
+.then(res => res.json())
+.then(data=>{
+  SuccessMessage(`user created with this email ${credentials.username}`)
+  goToSignIn();
+
+});
       } catch (error) {
+        ErrorMessage('Error in signup')
         console.log("Error:", error.message);
       }
     }
