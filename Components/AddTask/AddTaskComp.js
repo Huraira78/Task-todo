@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Container, TextField, Select, MenuItem, Button, FormControl, InputLabel, makeStyles } from '@mui/material';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -12,8 +12,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { ErrorMessage, SuccessMessage } from '@/AlertMessages/alertmessages';
-import { useDispatch } from 'react-redux';
-import { addTask } from '../../Redux/TaskSlice';
+import { useDispatch,useSelector } from 'react-redux';
+import { addTask, updateTask, clearEditedTask,selectEditedTask  } from '../../Redux/TaskSlice';
 
 
 const AddTask = () => {
@@ -21,32 +21,45 @@ const AddTask = () => {
   const [priority, setPriority] = useState('');
   const [selectedDate, setSelectedDate] = useState(null);
   const dispatch=useDispatch();
+  const editedTask = useSelector(selectEditedTask); 
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
+  useEffect(() => {
+    if (editedTask) {
+      setTaskTitle(editedTask.task);
+      setPriority(editedTask.priority);
+    }
+  }, [editedTask]);
+
   const handleAddTask = () => {
     if (!taskTitle || !priority || !selectedDate) {
-      ErrorMessage('Please fill in all fields.')
+      ErrorMessage('Please fill in all fields.');
       return;
-    }else{
-
-      
-          // If all fields are filled, gather the values
-          const newTask = {
-            task: taskTitle,
-            priority: priority,
-            date: selectedDate
-          };
-          dispatch(addTask(newTask));
-      SuccessMessage('Task Added Successfully')
-      
-          setTaskTitle('');
-          setPriority('');
-          setSelectedDate(null);
+    } else {
+      const newTask = {
+        task: taskTitle,
+        priority: priority,
+        date: selectedDate
+      };
+  
+      if (editedTask) {
+        dispatch(updateTask({ ...editedTask, ...newTask }));
+      SuccessMessage('Task Updated Successfully');
+      } else {
+        dispatch(addTask(newTask));
+        SuccessMessage('Task Added Successfully');
+      }
+  
+      setTaskTitle('');
+      setPriority('');
+      setSelectedDate(null);
     }
   };
+  
+  
 
   return (
     <Container maxWidth="xl" className="mainTaskDiv">

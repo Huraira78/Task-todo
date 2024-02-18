@@ -6,40 +6,71 @@ import { Container } from '@mui/material';
 import '../../styles/taskList.scss'
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { removeTask } from '../../Redux/TaskSlice';
+import { removeTask,setEditedTask } from '../../Redux/TaskSlice';
+import { useRouter} from 'next/navigation';
+import Swal from 'sweetalert2';
 
-const listComp = () => {
-  const tasks = useSelector(selectTasks);
 
-  const dispatch=useDispatch()
 
-  const handleDelete = (task) => {
-    dispatch(removeTask(task));
-  };
-
-console.log(tasks)
+const ListComp = () => {
+    const tasks = useSelector(selectTasks);
+    const dispatch = useDispatch();
+    const router=useRouter();
   
-
-  return (
-    <Container maxWidth="xl" className="mainTaskDiv">
-      <div className='task1'>
-        <div className='task2'>
-          <p className='mainHeading'>Task List</p>
-      <div className='taskBlock'>
-        {tasks.map((task, index) => (
-          <div key={index} className='taskLi'>
-           <div> <p>Title: {task.task}</p>
-            <p>Priority: {task.priority}</p>
-            <p>Date: {dayjs(task.date).format('YYYY-MM-DD')}</p></div>
-            <div><DeleteIcon onClick={() => handleDelete(task.task)} className='taskIcon'/><EditIcon className='taskIcon'/></div>
-            
+    const priorityOrder = ['high', 'medium', 'low'];
+    const sortedTasks = tasks.slice().sort((a, b) => {
+      return priorityOrder.indexOf(a.priority) - priorityOrder.indexOf(b.priority);
+    });
+    const handleEdit = (task) => {
+            dispatch(setEditedTask(task)); 
+            router.push('/addtask')
+      };
+    const handleDelete = (taskId) => {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            dispatch(removeTask(taskId));
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your file has been deleted.",
+              icon: "success"
+            });
+          }
+        });
+      };
+      
+  
+    return (
+      <Container maxWidth="xl" className="mainTaskDivList">
+        <div className='task1'>
+          <div className='task2'>
+            <p className='mainHeading'>Task List</p>
+            <div className='taskBlock'>
+              {sortedTasks.map((task, index) => (
+                <div key={index} className='taskLi'>
+                  <div>
+                    <p>Title: {task.task}</p>
+                    <p>Priority: {task.priority}</p>
+                    <p>Date: {dayjs(task.date).format('YYYY-MM-DD')}</p>
+                  </div>
+                  <div>
+                    <DeleteIcon onClick={() => handleDelete(task.task)} className='taskIcon' />
+                    <EditIcon  onClick={() => handleEdit(task)} className='taskIcon' />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
-      </div>
         </div>
-      </div>
-    </Container>
-  );
-};
-
-export default listComp;
+      </Container>
+    );
+  };
+  
+  export default ListComp;
