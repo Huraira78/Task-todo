@@ -9,6 +9,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import { removeTask,setEditedTask } from '../../Redux/TaskSlice';
 import { useRouter} from 'next/navigation';
 import Swal from 'sweetalert2';
+import { ErrorMessage } from '@/AlertMessages/alertmessages';
+import { useEffect } from 'react';
 
 
 
@@ -46,6 +48,12 @@ const ListComp = () => {
         });
       };
       
+      useEffect(()=>{
+if(tasks.length===0){
+    router.push('/addtask',{replace:true})
+    ErrorMessage('Please Add Task First');
+}
+      },[])
   
     return (
       <Container maxWidth="xl" className="mainTaskDivList">
